@@ -17,9 +17,9 @@
 
                 <form class="d-flex flex-column h-100" id="signUpForm" action="{{ asset('/submit.php') }}" method="post">
 
-                    <div id="content" class="d-flex flex-fill">
+                    <div id="content" class="d-flex flex-column flex-fill">
 
-                        <div id="contactPage" class="h-100 w-100">
+                        <div id="contactPage" class="flex-column flex-fill d-flex">
 
                             <h4>{{ "Service Type"|translate }}</h4>
                             <div class="form-group">
@@ -93,7 +93,7 @@
                             </div>
                         </div>
 
-                        <div id="addressPage" class="h-100 w-100 d-none">
+                        <div id="addressPage" class="flex-column flex-fill d-none">
 
                             <h4>{{ "Address"|translate }}</h4>
                             <div class="form-row">
@@ -156,10 +156,10 @@
                             </div>
                         </div>
 
-                        <div id="geocodePage" class="h-100 w-100 d-none">
+                        <div id="geocodePage" class="flex-column flex-fill d-none">
 
                             <h4>{{ "Location"|translate }}</h4>
-                            <div class="form-row h-100">
+                            <div class="form-row d-flex flex-column flex-fill">
                                 <div class="">
                                     <input id="geocode" class="form-control"
                                            type="hidden"
@@ -181,13 +181,13 @@
                                            readonly />
                                     <label for="longitude" class="sr-only">{{ "Longitude"|translate }}</label>
                                 </div>
-                                <div class="form-group h-100 w-100 px-1 mb-0">
-                                    <div id="map">Test</div>
+                                <div id="#mapContainer" class="d-flex flex-column flex-fill px-1">
+                                    <div id="map" class="d-flex flex-column flex-fill">Test</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="termsPage" class="h-100 w-100 d-none">
+                        <div id="termsPage" class="flex-column flex-fill d-none">
 
                             <h4>{{ "Terms of Service"|translate }}</h4>
                             <div class="form-row h-100">
@@ -293,11 +293,12 @@
             return;
 
         $current = getCurrentPage();
-        console.log($current);
+        //console.log($current);
         $prev = $current.prev();
 
         $current.addClass("d-none");
         $prev.removeClass("d-none");
+        $prev.addClass("d-flex");
 
         $current = getCurrentPage();
     }
@@ -308,11 +309,13 @@
             return;
 
         $current = getCurrentPage();
-        console.log($current);
         $next = $current.next();
 
+        $current.removeClass("d-flex");
         $current.addClass("d-none");
+
         $next.removeClass("d-none");
+        $next.addClass("d-flex");
 
         if($next.attr("id") === "addressPage") {
             $("#nextButton").addClass("d-none");
@@ -324,6 +327,7 @@
             $("#nextButton").addClass("d-none");
             $("#signUpButton").removeClass("d-none");
             $("#signUpButton").addClass("disabled");
+            //showMap();
         }
 
         $current = getCurrentPage();
@@ -369,19 +373,8 @@
 
 
 
-
     $(function() {
 
-        $current = getCurrentPage();
-
-        if($current.attr("id") === "geocodePage") {
-
-            let top = $("#map").position().top;
-            let bottom = $("#content").position().top + $("#content").height();
-
-            $("#map").height(bottom - top - 3);
-
-        }
 
 
 
