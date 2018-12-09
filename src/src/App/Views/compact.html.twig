@@ -160,21 +160,17 @@
 
                             <h4>{{ "Location"|translate }}</h4>
                             <div class="form-row d-flex flex-column flex-fill">
-                                <div class="">
+                                <div class="form-group">
                                     <input id="geocode" class="form-control"
                                            type="hidden"
                                            name="geocode"
                                            readonly />
                                     <label for="geocode" class="sr-only">{{ "Geocode"|translate }}</label>
-                                </div>
-                                <div class="form-group col-md-6">
                                     <input id="latitude" class="form-control"
                                            type="text"
                                            name="latitude"
                                            readonly />
                                     <label for="latitude" class="sr-only">{{ "Latitude"|translate }}</label>
-                                </div>
-                                <div class="form-group col-md-6">
                                     <input id="longitude" class="form-control"
                                            type="text"
                                            name="longitude"
@@ -187,7 +183,7 @@
                             </div>
                         </div>
 
-                        <div id="termsPage" class="flex-column flex-fill d-none">
+                        <div id="termsOSPage" class="flex-column flex-fill d-none">
 
                             <h4>{{ "Terms of Service"|translate }}</h4>
                             <div class="form-row h-100">
@@ -217,14 +213,14 @@
 
                     {# Prev/Next Buttons #}
                     <div class="btn-group btn-block mt-2">
-                        <div id="prevButton" class="btn btn-primary col-6 mr-1 disabled" onclick="prev()">
+                        <div id="prevPgButton" class="btn btn-primary col-6 mr-1 disabled" onclick="prev()">
                             <i class="fas fa-arrow-circle-left mr-2"></i>{{ "Prev"|translate }}
                         </div>
-                        <div id="nextButton" class="btn btn-primary col-6 ml-1 disabled" onclick="next()">
+                        <div id="nextPgButton" class="btn btn-primary col-6 ml-1 disabled" onclick="next()">
                             {{ "Next"|translate }}<i class="fas fa-arrow-circle-right ml-2"></i>
                         </div>
                         <div id="locateButton" class="btn btn-primary col-6 ml-1 d-none" onclick="geocodeAddress(this)">
-                            {{ "Next"|translate }}<i class="fas fa-arrow-circle-right ml-2"></i>
+                            {{ "Locate"|translate }}<i class="fas fa-arrow-circle-right ml-2"></i>
                         </div>
                         <div id="signUpButton" class="btn btn-primary col-6 ml-1 d-none" onclick="submit(this)">
                             {{ "Sign-Up"|translate }}<i class="fas fa-check-circle ml-2"></i>
@@ -259,11 +255,11 @@
         let $contact = $("#contactPage");
 
         if($contact.css("display") !== "none") {
-            $("#prevButton").addClass("disabled");
+            $("#prevPgButton").addClass("disabled");
             return $contact;
         }
         else {
-            $("#prevButton").removeClass("disabled");
+            $("#prevPgButton").removeClass("disabled");
         }
 
         let $address = $("#addressPage");
@@ -278,66 +274,132 @@
             return $geocode;
         }
 
-        let $terms = $("#termsPage");
+        let $terms = $("#termsOSPage");
 
         if($terms.css("display") !== "none") {
             return $terms;
         }
-
-
     }
+
+    function loadContactPage() {
+
+        // Show/Hide Pages...
+        $("#contactPage").removeClass("d-none").addClass("d-flex");
+        $("#addressPage").removeClass("d-flex").addClass("d-none");
+        $("#geocodePage").removeClass("d-flex").addClass("d-none");
+        $("#termsOSPage").removeClass("d-flex").addClass("d-none");
+
+        // Show/Hide & Enable/Disable Buttons...
+        $("#prevPgButton").addClass("disabled");
+        $("#nextPgButton").removeClass("d-none").addClass("d-inline-block");
+        $("#locateButton").removeClass("d-inline-block").addClass("d-none");
+        $("#signUpButton").removeClass("d-inline-block").addClass("d-none");
+
+        updateContact();
+    }
+
+    function loadAddressPage() {
+
+        // Show/Hide Pages...
+        $("#contactPage").removeClass("d-flex").addClass("d-none");
+        $("#addressPage").removeClass("d-none").addClass("d-flex");
+        $("#geocodePage").removeClass("d-flex").addClass("d-none");
+        $("#termsOSPage").removeClass("d-flex").addClass("d-none");
+
+        // Show/Hide & Enable/Disable Buttons...
+        $("#prevPgButton").removeClass("disabled");
+        $("#nextPgButton").removeClass("d-inline-block").addClass("d-none");
+        $("#locateButton").removeClass("d-none").addClass("d-inline-block");
+        $("#signUpButton").removeClass("d-inline-block").addClass("d-none");
+
+        updateAddress();
+    }
+
+    function loadGeocodePage() {
+
+        // Show/Hide Pages...
+        $("#contactPage").removeClass("d-flex").addClass("d-none");
+        $("#addressPage").removeClass("d-flex").addClass("d-none");
+        $("#geocodePage").removeClass("d-none").addClass("d-flex");
+        $("#termsOSPage").removeClass("d-flex").addClass("d-none");
+
+        // Show/Hide & Enable/Disable Buttons...
+        $("#prevPgButton").removeClass("disabled");
+        $("#nextPgButton").removeClass("d-none").addClass("d-inline-block");
+        $("#locateButton").removeClass("d-inline-block").addClass("d-none");
+        $("#signUpButton").removeClass("d-inline-block").addClass("d-none");
+
+        //updateAddress();
+    }
+
+    function loadTermsPage() {
+
+        // Show/Hide Pages...
+        $("#contactPage").removeClass("d-flex").addClass("d-none");
+        $("#addressPage").removeClass("d-flex").addClass("d-none");
+        $("#geocodePage").removeClass("d-flex").addClass("d-none");
+        $("#termsOSPage").removeClass("d-none").addClass("d-flex");
+
+        // Show/Hide & Enable/Disable Buttons...
+        $("#prevPgButton").removeClass("disabled");
+        $("#nextPgButton").removeClass("d-inline-block").addClass("d-none");
+        $("#locateButton").removeClass("d-inline-block").addClass("d-none");
+        $("#signUpButton").removeClass("d-none").addClass("d-inline-block");
+
+        // Toggle the Sign-Up button as needed!
+        let checked = $("#agreement").is(":checked");
+        updateAgreement(checked);
+    }
+
+
+
+
 
     function prev() {
 
-        if($("#prevButton").hasClass("disabled"))
+        let $prevButton = $("#prevPgButton");
+
+        if($prevButton.hasClass("disabled"))
             return;
 
-        $current = getCurrentPage();
-        //console.log($current);
-        $prev = $current.prev();
+        let $current = getCurrentPage();
+        let $prev = $current.prev();
 
-        $current.addClass("d-none");
-        $prev.removeClass("d-none");
-        $prev.addClass("d-flex");
+        switch($prev.attr("id")) {
 
-        $current = getCurrentPage();
+            case "contactPage"  :   loadContactPage();      break;
+            case "addressPage"  :   loadAddressPage();      break;
+            case "geocodePage"  :   loadGeocodePage();      break;
+            case "termsOSPage"  :   loadTermsPage();        break;
+        }
+
     }
 
     function next() {
 
-        if($("#nextButton").hasClass("disabled"))
+        if($("#nextPgButton").hasClass("disabled"))
             return;
 
-        $current = getCurrentPage();
-        $next = $current.next();
+        let $current = getCurrentPage();
+        let $next = $current.next();
 
-        $current.removeClass("d-flex");
-        $current.addClass("d-none");
+        switch($next.attr("id")) {
 
-        $next.removeClass("d-none");
-        $next.addClass("d-flex");
-
-        if($next.attr("id") === "addressPage") {
-            $("#nextButton").addClass("d-none");
-            $("#locateButton").removeClass("d-none");
-            $("#locateButton").addClass("disabled");
+            case "contactPage"  :   loadContactPage();      break;
+            case "addressPage"  :   loadAddressPage();      break;
+            case "geocodePage"  :   loadGeocodePage();      break;
+            case "termsOSPage"  :   loadTermsPage();        break;
         }
 
-        if($next.attr("id") === "termsPage") {
-            $("#nextButton").addClass("d-none");
-            $("#signUpButton").removeClass("d-none");
-            $("#signUpButton").addClass("disabled");
-            //showMap();
-        }
-
-        $current = getCurrentPage();
     }
+
 
     function typeChanged(value) {
         // Toggle the "Company Name" input depending on the value.
         $("#companyNameGroup").css("display", value === "2" ? "block" : "none");
         updateContact();
     }
+
 
 
 
@@ -364,17 +426,42 @@
 
         // Toggle the "Sign-Up" button when the agreement is accepted.
         if(valid)
-            $("#nextButton").removeClass("disabled");
+            $("#nextPgButton").removeClass("disabled");
         else
-            $("#nextButton").addClass("disabled");
+            $("#nextPgButton").addClass("disabled");
+
 
     }
 
 
+    // Read a page's GET URL variables and return them as an associative array.
+    function getUrlVars()
+    {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
 
 
     $(function() {
 
+        let status = getUrlVars()["status"];
+
+        if(status !== undefined) {
+            let $response = $("#response");
+
+            if($response) {
+                $.featherlight($response, {});
+                $response.removeClass("d-none");
+            }
+
+        }
 
 
 
@@ -385,4 +472,22 @@
 
 </script>
 
+{% endblock %}
+
+
+
+{% block response %}
+    {% if query.status == "success" %}
+        <div id="response" class="container-fluid">
+            <div class="alert alert-success">
+                {{ "Thank you for your submission, a sales representative will contact you soon!"|translate|raw }}
+            </div>
+        </div>
+    {% elseif query.status == "failure" %}
+        <div id="response" class="container-fluid">
+            <div class="alert alert-danger">
+                {{ ("Something went wrong during the submission process, we apologize for the inconvenience.<br/>" ~
+                "Please feel free to contact us by phone!")|translate|raw }}</div>
+        </div>
+    {% endif %}
 {% endblock %}

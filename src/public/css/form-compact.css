@@ -49,3 +49,20 @@ h4 {
 .form-group {
     margin-bottom: 0.75rem;
 }
+
+#response {
+    display: none;
+}
+
+.featherlight .featherlight-content {
+
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    max-height: 100% !important;
+}
+
+.featherlight .featherlight-inner {
+    display: block !important;
+
+}
