@@ -1,0 +1,81 @@
+{
+    "version": "1",
+    "information": {
+        "name": "registration",
+        "displayName": "Client Registration",
+        "description": "A simple UCRM Plugin to provide self-service Client registration.",
+        "url": "https://github.com/ucrm-plugins/marketplace",
+        "version": "1.0.0",
+        "ucrmVersionCompliancy": {
+            "min": "2.14.1",
+            "max": null
+        },
+        "author": "Ryan Spaeth <rspaeth@mvqn.net>"
+    },
+    "menu": [
+        {
+            "key": "Add-Ons",
+            "label": "Client Registration",
+            "type": "admin",
+            "target": "iframe"
+        }
+    ],
+    "configuration": [
+        {
+            "key": "language",
+            "label": "Language",
+            "description": "The language to use on the Registration form.  Defaults to the UCRM language.",
+            "required": 0,
+            "type": "choice",
+            "choices": {
+                "Default":              "",
+
+                "Catalan":              "ca-ES",
+                "Czech":                "cs",
+                "Danish":               "da",
+                "Dutch":                "nl",
+                "English (Canada)":     "en-CA",
+                "English (US)":         "en-US",
+                "French":               "fr",
+                "German":               "de",
+                "Hungarian":            "hu",
+                "Italian":              "it",
+                "Latvian":              "lv",
+                "Portuguese":           "pt",
+                "Portuguese (Brazil)":  "pt-BR",
+                "Russian":              "ru",
+                "Slovak":               "sk",
+                "Spanish":              "es",
+                "Swedish":              "sv",
+                "Turkish":              "tr"
+            }
+        },
+
+
+        {
+            "key": "mapDefaultLat",
+            "label": "Default Latitude",
+            "description": "The default latitude position on the map.  Defaults to 37.09024 (United States).",
+            "required": 0
+        },
+        {
+            "key": "mapDefaultLng",
+            "label": "Default Longitude",
+            "description": "The default longitude position on the map.  Defaults to -95.712891 (United States).",
+            "required": 0
+        },
+        {
+            "key": "mapDefaultZoom",
+            "label": "Default Zoom Level",
+            "description": "The default zoom level on the map.  Defaults to 3.",
+            "required": 0
+        },
+        {
+            "key": "mapLayer",
+            "label": "Map Layer (Optional)",
+            "description": "A link to either a KMZ/KML file or a GeoRSS feed to use as an overlay on the map.",
+            "required": 0
+        }
+    ]
+}
+

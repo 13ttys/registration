@@ -1,0 +1,50 @@
+{% extends "layouts/html.twig" %}
+
+{% block scripts %}
+    {# Intialize and populate the config object with configuration values from PHP to be made available to JS. #}
+    <script>
+        /**
+         * @class config
+         * @property {Object} maps
+         * @property {Object} maps.google
+         * @property {Object} maps.google.api
+         * @property {String} maps.google.api.key
+         * @property {Object} maps.google.defaults
+         * @property {Number} maps.google.defaults.latitude
+         * @property {Number} maps.google.defaults.longitude
+         * @property {Number} maps.google.defaults.zoom
+         * @property {Array} maps.google.layers
+         * @property {Object} maps.google.heatmaps
+         */
+        let config = {
+            maps: {{ config.maps|json_encode|raw }}
+        };
+
+        let translations = {{ translations|json_encode|raw }};
+    </script>
+
+    {# Load our custom scripts. #}
+    <script src="{{ asset('/js/validation.js') }}"></script>
+    <script src="{{ asset('/js/form.js') }}"></script>
+    <script src="{{ asset('/js/map.js') }}"></script>
+
+    {# Load the Google Maps API script, providing the API key and a callback function. #}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ config.maps.google.api.key}}&callback=initMap">
+    </script>
+{% endblock %}
+
+{% block response %}
+    {% if query.status == "success" %}
+        <div id="response" class="container">
+            <div class="alert alert-success">
+                {{ "Thank you for your submission, a sales representative will contact you soon!"|translate|raw }}
+            </div>
+        </div>
+    {% elseif query.status == "failure" %}
+        <div id="response" class="container">
+            <div class="alert alert-danger">
+                {{ ("Something went wrong during the submission process, we apologize for the inconvenience.<br/>" ~
+                "Please feel free to contact us by phone!")|translate|raw }}</div>
+        </div>
+    {% endif %}
+{% endblock %}

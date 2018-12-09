@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{{ title }}</title>
+
+    <link
+        rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+        crossorigin="anonymous">
+
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+    <link
+        rel="stylesheet"
+        href="{{ asset('/css/featherlight/featherlight.min.css') }}">
+
+    <link
+        rel="stylesheet"
+        href="{{ asset('/css/form.css') }}">
+
+    {% block links %}{% endblock %}
+</head>
+<body>
+{% block response %}{% endblock %}
+{% block content %}{% endblock %}
+
+
+<script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous">
+</script>
+
+<script
+        src="{{ asset('/js/jquery-validation/jquery.validate.min.js') }}">
+</script>
+
+<script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"
+    integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl"
+    crossorigin="anonymous">
+</script>
+
+<script
+    src="{{ asset('/js/featherlight/featherlight.min.js') }}">
+</script>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>
