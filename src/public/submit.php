@@ -2,113 +2,80 @@
 require_once __DIR__."/../vendor/autoload.php";
 require_once __DIR__."/../bootstrap.php";
 
+use App\Settings;
 use UCRM\REST\Endpoints\Country;
+use UCRM\REST\Endpoints\State;
+use UCRM\REST\Endpoints\Client;
+use UCRM\REST\Endpoints\ClientContact;
+use UCRM\REST\Endpoints\Organization;
 
-// Get the previous page's URL without the query string.
-//$previousPage = preg_replace("/\?.*/", "", $_SERVER["HTTP_REFERER"]);
+use UCRM\Common\Log;
+
+// Fix-Up the query string to remove the '&status=...' part, in the case of re-submission!
+$previousPage = preg_replace("/\&status=\w+/", "", $_SERVER["HTTP_REFERER"]);
 
 try
 {
-    echo "TEST";
-    die();
+    /** @var Country $country */
+    $country = null;
 
-    // Determine the CountryId, or UCRM will assign the organization's default.
-    $countryId = null;
     if($_POST["country"] !== "")
-    {
-        $countries = Country::get();
+        $country = Country::get()->whereAny([ "name" => $_POST["country"], "code" => $_POST["country"] ])->first();
 
-        if ($countries != null)
-            foreach ($countries as $country)
-            {
-                // Lookup based upon "name".
-                if ($country["name"] === $_POST["country"])
-                    $countryId = $country["id"];
+    /** @var State $state */
+    $state = null;
 
-                // Lookup based upon "abbreviation".
-                if($country["code"] === $_POST["country"])
-                    $countryId = $country["id"];
-            }
-    }
+    if($_POST["state"] !== null && $country !== null)
+        $state = $country->getStates()->whereAny([ "name" => $_POST["state"], "code" => $_POST["state"] ])->first();
 
-    // Determine the StateId, or UCRM will assign the organization's default (when the country supports a state/region).
-    $stateId = null;
-    if($_POST["state"] !== null && $countryId !== null)
-    {
-        /** @var Country $country */
-        $country = Country::getById($countryId);
-        $states = $country->getStates();
-
-        if($states != null)
-            foreach ($states as $state)
-            {
-                // Lookup based upon "name".
-                if ($state["name"] === $_POST["state"])
-                    $stateId = $state["id"];
-
-                // Lookup based upon "abbreviation".
-                if($state["code"] === $_POST["state"])
-                    $stateId = $state["id"];
-            }
-    }
+    $organizationId = Settings::getOrganizationId() ?? Organization::getByDefault()->getId();
 
     // Create the Client data...
-    $client = [
-        "isLead" => true,
-        "clientType" => (int)$_POST["clientType"],
-        "companyName" => $_POST["companyName"],
-        "companyContactFirstName" => $_POST["clientType"] === "2" ? $_POST["firstName"] : "",
-        "companyContactLastName" => $_POST["clientType"] === "2" ? $_POST["lastName"] : "",
-        "firstName" => $_POST["firstName"],
-        "lastName" => $_POST["lastName"],
-        "street1" => $_POST["street1"],
-        "street2" => $_POST["street2"],
-        "city" => $_POST["city"],
-        "stateId" => $stateId,
-        "zipCode" => $_POST["zipCode"],
-        "countryId" => $countryId,
-        "addressGpsLat" => (float)$_POST["latitude"],
-        "addressGpsLon" => (float)$_POST["longitude"],
-    ];
-
-    // Remove any empty or null values.
-    $client = array_filter($client, function($value)
-    {
-        return $value !== null && $value !== "";
-    });
+    $client = (new Client())
+        ->setOrganizationId($organizationId)
+        ->setIsLead(true)
+        ->setClientType((int)$_POST["clientType"])
+        ->setCompanyName($_POST["companyName"])
+        ->setCompanyContactFirstName($_POST["clientType"] === "2" ? $_POST["firstName"] : "")
+        ->setCompanyContactLastName($_POST["clientType"] === "2" ? $_POST["lastName"] : "")
+        ->setFirstName($_POST["firstName"])
+        ->setLastName($_POST["lastName"])
+        ->setStreet1($_POST["street1"])
+        ->setStreet2($_POST["street2"])
+        ->setCity($_POST["city"])
+        ->setStateId($state !== null ? $state->getId() : null)
+        ->setZipCode($_POST["zipCode"])
+        ->setCountryId($country !== null ? $country->getId() : null)
+        ->setAddressGpsLat((float)$_POST["latitude"])
+        ->setAddressGpsLon((float)$_POST["longitude"])
+        ->setInvoiceAddressSameAsContact(true)
+        ->setRegistrationDate(new DateTime());
 
     // Insert the Client.
-    $inserted = $rest->post("/clients", $client);
-    $clientId = $inserted["id"];
+    $insertedClient = $client->insert();
 
-    var_dump($inserted);
+    Log::info("Client Lead Created: $insertedClient");
 
-    // Create the Contact data...
-    $contact = [
-        "email" => $_POST["email"],
-        "phone" => $_POST["phone"] ?: "",
-        "name" => $_POST["firstName"]." ".$_POST["lastName"],
-        "isBilling" => true,
-        "isContact" => true,
-    ];
-
-    // Remove any empty or null values.
-    $contact = array_filter($contact, function($value)
-    {
-        return $value !== null && $value !== "";
-    });
+    $contact = (new ClientContact())
+        ->setClientId($insertedClient->getId())
+        ->setEmail($_POST["email"])
+        ->setPhone($_POST["phone"] ?: "")
+        ->setName($_POST["firstName"]." ".$_POST["lastName"])
+        ->setIsBilling(true)
+        ->setIsContact(true);
 
     // Attempt to insert the Contact in the UCRM system.
-    $inserted = $rest->post("/clients/$clientId/contacts", $contact);
+    $insertedContact = $contact->insert();
 
-    //var_dump($inserted);
+    Log::info("Client Lead's Contact Created: $insertedContact");
 
-    header("Location: $previousPage?status=success");
+    header("Location: $previousPage&status=success");
 }
 catch (Exception $e)
 {
+    Log::warning("Client Lead and/or Contact could not be created!\n{$e->getMessage()}");
     //var_dump($e);
 
-    header("Location: $previousPage?status=failure");
+    header("Location: $previousPage&status=failure");
 }
 

@@ -31,6 +31,7 @@
     {# Load the Google Maps API script, providing the API key and a callback function. #}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ config.maps.google.api.key}}&callback=initMap">
     </script>
+    {% block extraScripts %}{% endblock %}
 {% endblock %}
 
 {% block response %}

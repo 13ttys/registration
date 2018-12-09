@@ -1,15 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ asset("/css/iframe.css") }}">
-</head>
-<body>
+{% extends "layouts/mapped.html.twig" %}
 
-Index.html.twig
-<pre>{{ name }}</pre>
-<pre>{{ route }}</pre>
+{% block links %}
+    <link rel="stylesheet" href="{{ asset('/css/iframe.css') }}">
+{% endblock %}
 
-</body>
-</html>
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row d-flex flex-column h-100">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            {# Github Link #}
+            <a class="mr-3" href="https://github.com/ucrm-plugins/registration.git" target="_blank">
+                <i class="fab fa-github fa-2x" style="color: white;" aria-hidden="true"></i>
+            </a>
+
+            {# Plugin Name #}
+            <span class="navbar-brand">Client Registration</span>
+
+            {# Toggle Button #}
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            {# Menu Items #}
+            <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ asset('/simple.html.twig', [], false) }}" target="preview"
+                            onclick="updateCode(this, 100)">Simple</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ asset('/full.html.twig', [], false) }}" target="preview"
+                            onclick="updateCode(this, 100)">Full</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ asset('/compact.html.twig', [], false) }}" target="preview"
+                           onclick="updateCode(this, 50)">Compact</a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </nav>
+
+        <h4 id="title" class="my-3">Simple Layout</h4>
+
+        <div id="simpleCode" class="alert alert-primary">
+            HTML Embed Code:<br/>
+            <code id="code">&lt;iframe src="{{ asset('/simple.html.twig', [], false) }}"&gt;&lt;/iframe&gt;</code>
+        </div>
+
+
+
+
+
+        <div class="d-flex flex-fill justify-content-center">
+            <iframe id="preview" name="preview" src="{{ asset('/simple.html.twig') }}" width="100%"
+                style="border:1px solid blue;"></iframe>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+
+    function updateCode(link, width) {
+
+        let $link = $(link);
+
+        $("#title").text($link.text() + " Layout");
+        $("#code").text("<iframe src=\"" + $link.attr("href") + "\"></iframe>");
+        $("#preview").width(width+"%");
+    }
+
+    $(function() {
+
+    });
+
+
+</script>
+{% endblock %}

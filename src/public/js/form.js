@@ -12,6 +12,7 @@ function typeChanged(value) {
 }
 
 
+
 /**
  * Handles changes to the address fields and toggle the "Locate" button accordingly.
  */

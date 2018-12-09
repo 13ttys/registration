@@ -21,11 +21,9 @@
         rel="stylesheet"
         href="{{ asset('/css/featherlight/featherlight.min.css') }}">
 
-    <link
-        rel="stylesheet"
-        href="{{ asset('/css/form.css') }}">
-
     {% block links %}{% endblock %}
+
+    {% block styles %}{% endblock %}
 </head>
 <body>
 {% block response %}{% endblock %}
@@ -39,7 +37,7 @@
 </script>
 
 <script
-        src="{{ asset('/js/jquery-validation/jquery.validate.min.js') }}">
+    src="{{ asset('/js/jquery-validation/jquery.validate.min.js') }}">
 </script>
 
 <script

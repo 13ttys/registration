@@ -129,6 +129,16 @@ function geocodeAddress(button) {
     }).done(function(data) {
         // Hide the button spinner icon and restore it's previous content.
         $button.html(idleText);
+
+        $geocodePage = $("#geocodePage");
+
+        if($geocodePage) {
+
+            $("#locateButton").addClass("d-none");
+            $("#nextButton").removeClass("d-none");
+            next();
+        }
+
     });
 }
 

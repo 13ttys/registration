@@ -171,7 +171,7 @@ $container['logger'] = function (\Slim\Container $container)
 
 // Applied in Ascending order, bottom up!
 //$app->add(new \UCRM\Routing\Middleware\PluginAuthentication());
-$app->add(new QueryStringRouter("/simple.html.twig"));
+$app->add(new QueryStringRouter("/index.html.twig"));
 
 
 

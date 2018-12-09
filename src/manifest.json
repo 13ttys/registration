@@ -50,8 +50,12 @@
                 "Turkish":              "tr"
             }
         },
-
-
+        {
+            "key": "organizationId",
+            "label": "Organization ID",
+            "description": "The Organization ID for which to assign all new Client Leads. If blank, the default Organization is used.",
+            "required": 0
+        },
         {
             "key": "mapDefaultLat",
             "label": "Default Latitude",

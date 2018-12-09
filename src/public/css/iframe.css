@@ -3,10 +3,10 @@ html {
 }
 
 body {
-    height: calc(100% - 50px);
+    height:100%;
     margin: 0;
     padding: 18px 32px 32px;
-    background-color: red;
+
 }
 
 

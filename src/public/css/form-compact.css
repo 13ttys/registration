@@ -1,0 +1,51 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Always set the map height explicitly to define the size of the div element that contains the map. */
+#map {
+    width: 100%;
+    /*height: 240px;*/
+
+}
+
+/* jQuery Validation style */
+.error {
+    color: darkred;
+}
+
+p {
+    text-align: justify;
+}
+
+
+
+.container {
+
+}
+
+#title {
+    text-align: center;
+    background-color: blue;
+    color: white;
+    padding: 0.5rem 0.25rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+
+.form-group {
+    margin-bottom: 0.75rem;
+}

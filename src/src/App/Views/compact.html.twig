@@ -1,0 +1,395 @@
+{% extends "layouts/mapped.html.twig" %}
+
+{% set title = "Compact Layout" %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ asset('/css/form-compact.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid h-100">
+
+        <div class="d-flex flex-column h-100">
+
+            <h2 id="title">{{ "Customer Request Form"|translate }}</h2>
+
+            <div class="d-flex flex-column h-100">
+
+                <form class="d-flex flex-column h-100" id="signUpForm" action="{{ asset('/submit.php') }}" method="post">
+
+                    <div id="content" class="d-flex flex-fill">
+
+                        <div id="contactPage" class="h-100 w-100">
+
+                            <h4>{{ "Service Type"|translate }}</h4>
+                            <div class="form-group">
+                                <div class="form-check form-check-inline">
+                                    <input id="clientTypeResidential" class="form-check-input"
+                                           type="radio"
+                                           name="clientType"
+                                           value="1"
+                                           checked
+                                           onclick="typeChanged(this.value)" />
+                                    <label class="form-check-label" for="clientTypeResidential">
+                                        {{ "Residential"|translate }}</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input id="clientTypeCommercial" class="form-check-input"
+                                           type="radio"
+                                           name="clientType"
+                                           value="2"
+                                           onclick="typeChanged(this.value)" />
+                                    <label class="form-check-label" for="clientTypeCommercial">
+                                        {{ "Commercial"|translate }}</label>
+                                </div>
+                            </div>
+
+                            <h4>{{ "Contact" }}</h4>
+                            <div id="companyNameGroup" class="form-group" style="display:none">
+                                <input id="companyName" class="form-control"
+                                       type="text"
+                                       name="companyName"
+                                       placeholder="{{ 'Company Name' }}"
+                                       onkeyup="updateContact()" />
+                                <label for="companyName" class="sr-only">{{ "Company Name"|translate }}</label>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <input id="firstName" class="form-control"
+                                           type="text"
+                                           name="firstName"
+                                           placeholder="{{ 'First Name'|translate }}"
+                                           onkeyup="updateContact()" />
+                                    <label for="firstName" class="sr-only">{{ "First Name"|translate }}</label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input id="lastName" class="form-control"
+                                           type="text"
+                                           name="lastName"
+                                           placeholder="{{ 'Last Name'|translate }}"
+                                           onkeyup="updateContact()" />
+                                    <label for="lastName" class="sr-only">{{ "Last Name"|translate }}</label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <input id="email" class="form-control"
+                                           type="email"
+                                           name="email"
+                                           aria-describedby="emailHelp"
+                                           placeholder="{{ 'Email'|translate }}"
+                                           onkeyup="updateContact()" />
+                                    <label for="email" class="sr-only">{{ "Email"|translate }}</label>
+                                    <small id="emailHelp" class="form-text text-muted">
+                                        {{ "Your email will never be shared with anyone."|translate }}</small>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input id="phone" class="form-control"
+                                           type="text"
+                                           name="phone"
+                                           placeholder="{{ 'Phone'|translate }}" />
+                                    <label for="phone" class="sr-only">{{ "Phone"|translate }}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="addressPage" class="h-100 w-100 d-none">
+
+                            <h4>{{ "Address"|translate }}</h4>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <input id="street1" class="form-control"
+                                           type="text"
+                                           name="street1"
+                                           aria-describedby="street1Help"
+                                           placeholder="{{ 'Address Line 1'|translate }}"
+                                           onkeyup="updateAddress()" />
+                                    <label for="street1" class="sr-only">{{ "Address Line 1"|translate }}</label>
+                                    <small id="street1Help" class="form-text text-muted">
+                                        {{ "Street address, P.O. Box, company name, c/o, etc."|translate }}</small>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input id="street2" class="form-control"
+                                           type="text"
+                                           name="street2"
+                                           aria-describedby="street2Help"
+                                           placeholder="{{ 'Address Line 2'|translate }}"
+                                           onkeyup="updateAddress()" />
+                                    <label for="street2" class="sr-only">{{ "Address Line 2"|translate }}</label>
+                                    <small id="street2Help" class="form-text text-muted">
+                                        {{ "Apartment, suite, unit, floor, etc."|translate }}</small>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input id="city" class="form-control"
+                                           type="text"
+                                           name="city"
+                                           placeholder="{{ 'City / Town'|translate }}"
+                                           onkeyup="updateAddress()" />
+                                    <label for="city" class="sr-only">{{ "City / Town"|translate }}</label>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <input id="state" class="form-control"
+                                           type="text"
+                                           name="state"
+                                           placeholder="{{ 'State / Province / Region'|translate }}"
+                                           onkeyup="updateAddress()" />
+                                    <label for="state" class="sr-only">{{ "State / Province / Region"|translate }}</label>
+                                </div>
+
+                                <div class="form-group col-md-2">
+                                    <input id="zip" class="form-control"
+                                           type="text"
+                                           name="zipCode"
+                                           placeholder="{{ 'Zip / Postal Code'|translate }}"
+                                           onkeyup="updateAddress()" />
+                                    <label for="zip" class="sr-only">{{ "Zip / Postal Code"|translate }}</label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input id="country" class="form-control"
+                                           type="text"
+                                           name="country"
+                                           placeholder="{{ 'Country'|translate }}"
+                                           onkeyup="updateAddress()" />
+                                    <label for="city" class="sr-only">{{ "Country"|translate }}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="geocodePage" class="h-100 w-100 d-none">
+
+                            <h4>{{ "Location"|translate }}</h4>
+                            <div class="form-row h-100">
+                                <div class="">
+                                    <input id="geocode" class="form-control"
+                                           type="hidden"
+                                           name="geocode"
+                                           readonly />
+                                    <label for="geocode" class="sr-only">{{ "Geocode"|translate }}</label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input id="latitude" class="form-control"
+                                           type="text"
+                                           name="latitude"
+                                           readonly />
+                                    <label for="latitude" class="sr-only">{{ "Latitude"|translate }}</label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input id="longitude" class="form-control"
+                                           type="text"
+                                           name="longitude"
+                                           readonly />
+                                    <label for="longitude" class="sr-only">{{ "Longitude"|translate }}</label>
+                                </div>
+                                <div class="form-group h-100 w-100 px-1 mb-0">
+                                    <div id="map">Test</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="termsPage" class="h-100 w-100 d-none">
+
+                            <h4>{{ "Terms of Service"|translate }}</h4>
+                            <div class="form-row h-100">
+                                <div class="form-group px-1 w-100">
+                                    <div class="btn btn-secondary btn-block" data-featherlight="{{ asset('/tos.html') }}"  >Read</div>
+                                </div>
+                                <div class="form-group px-1">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="agreement" class="form-check-input"
+                                                   type="checkbox"
+                                                   name="agreement"
+                                                   aria-describedby="agreementHelp"
+                                                   value="yes"
+                                                   onchange="updateAgreement(this.checked)" />
+                                            <p><strong>Check here to indicate that you have read and agree to the "Terms of Service".</strong></p>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                    {# Prev/Next Buttons #}
+                    <div class="btn-group btn-block mt-2">
+                        <div id="prevButton" class="btn btn-primary col-6 mr-1 disabled" onclick="prev()">
+                            <i class="fas fa-arrow-circle-left mr-2"></i>{{ "Prev"|translate }}
+                        </div>
+                        <div id="nextButton" class="btn btn-primary col-6 ml-1 disabled" onclick="next()">
+                            {{ "Next"|translate }}<i class="fas fa-arrow-circle-right ml-2"></i>
+                        </div>
+                        <div id="locateButton" class="btn btn-primary col-6 ml-1 d-none" onclick="geocodeAddress(this)">
+                            {{ "Next"|translate }}<i class="fas fa-arrow-circle-right ml-2"></i>
+                        </div>
+                        <div id="signUpButton" class="btn btn-primary col-6 ml-1 d-none" onclick="submit(this)">
+                            {{ "Sign-Up"|translate }}<i class="fas fa-check-circle ml-2"></i>
+                        </div>
+                    </div>
+
+
+
+                </form>
+
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block extraScripts %}
+
+<script>
+
+    function getCurrentPage() {
+
+        let $contact = $("#contactPage");
+
+        if($contact.css("display") !== "none") {
+            $("#prevButton").addClass("disabled");
+            return $contact;
+        }
+        else {
+            $("#prevButton").removeClass("disabled");
+        }
+
+        let $address = $("#addressPage");
+
+        if($address.css("display") !== "none") {
+            return $address;
+        }
+
+        let $geocode = $("#geocodePage");
+
+        if($geocode.css("display") !== "none") {
+            return $geocode;
+        }
+
+        let $terms = $("#termsPage");
+
+        if($terms.css("display") !== "none") {
+            return $terms;
+        }
+
+
+    }
+
+    function prev() {
+
+        if($("#prevButton").hasClass("disabled"))
+            return;
+
+        $current = getCurrentPage();
+        console.log($current);
+        $prev = $current.prev();
+
+        $current.addClass("d-none");
+        $prev.removeClass("d-none");
+
+        $current = getCurrentPage();
+    }
+
+    function next() {
+
+        if($("#nextButton").hasClass("disabled"))
+            return;
+
+        $current = getCurrentPage();
+        console.log($current);
+        $next = $current.next();
+
+        $current.addClass("d-none");
+        $next.removeClass("d-none");
+
+        if($next.attr("id") === "addressPage") {
+            $("#nextButton").addClass("d-none");
+            $("#locateButton").removeClass("d-none");
+            $("#locateButton").addClass("disabled");
+        }
+
+        if($next.attr("id") === "termsPage") {
+            $("#nextButton").addClass("d-none");
+            $("#signUpButton").removeClass("d-none");
+            $("#signUpButton").addClass("disabled");
+        }
+
+        $current = getCurrentPage();
+    }
+
+    function typeChanged(value) {
+        // Toggle the "Company Name" input depending on the value.
+        $("#companyNameGroup").css("display", value === "2" ? "block" : "none");
+        updateContact();
+    }
+
+
+
+    function updateContact() {
+
+        let valid = true;
+
+        // Only required when the clientType is "Commercial"!
+        let clientType = $("input[name='clientType']:checked").val(); // 1 = Residential, 2 = Commercial
+
+        let firstName = $("#firstName").val();
+        let lastName = $("#lastName").val();
+        let companyName = $("#companyName").val();
+        let email = $("#email").val();
+
+        if(clientType === "1" && (firstName === "" || lastName === ""))
+            valid = false;
+
+        if(clientType === "2" && companyName === "")
+            valid = false;
+
+        if(email === "")
+            valid = false;
+
+        // Toggle the "Sign-Up" button when the agreement is accepted.
+        if(valid)
+            $("#nextButton").removeClass("disabled");
+        else
+            $("#nextButton").addClass("disabled");
+
+    }
+
+
+
+
+
+    $(function() {
+
+        $current = getCurrentPage();
+
+        if($current.attr("id") === "geocodePage") {
+
+            let top = $("#map").position().top;
+            let bottom = $("#content").position().top + $("#content").height();
+
+            $("#map").height(bottom - top - 3);
+
+        }
+
+
+
+
+    });
+
+
+
+</script>
+
+{% endblock %}
