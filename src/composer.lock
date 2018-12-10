@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6db281e7312d8779829b47209a11eace",
+    "content-hash": "6baa7d1f83b9d19aa7ad241169534fd2",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -620,21 +620,22 @@
         },
         {
             "name": "mvqn/rest",
-            "version": "1.3.1",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mvqn/rest.git",
-                "reference": "fa6d1d853d01e76235cec99a804f2c6e9f1e0b69"
+                "reference": "e20199c171e4df2520c386ee11b27c34f9e32461"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mvqn/rest/zipball/fa6d1d853d01e76235cec99a804f2c6e9f1e0b69",
-                "reference": "fa6d1d853d01e76235cec99a804f2c6e9f1e0b69",
+                "url": "https://api.github.com/repos/mvqn/rest/zipball/e20199c171e4df2520c386ee11b27c34f9e32461",
+                "reference": "e20199c171e4df2520c386ee11b27c34f9e32461",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
+                "guzzlehttp/guzzle": "~6.0",
                 "mvqn/annotations": "~1",
                 "mvqn/collections": "~1",
                 "mvqn/common": "~1",
@@ -642,7 +643,8 @@
                 "php": "~7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "7.2.7"
+                "phpunit/phpunit": "7.2.7",
+                "vlucas/phpdotenv": "^2.5"
             },
             "type": "library",
             "autoload": {
@@ -661,7 +663,7 @@
                 }
             ],
             "description": "A simple REST Client library for interfacing with generic REST Endpoints.",
-            "time": "2018-11-19T22:17:44+00:00"
+            "time": "2018-12-10T02:10:02+00:00"
         },
         {
             "name": "mvqn/twig",

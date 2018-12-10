@@ -57,12 +57,21 @@ if(file_exists(__DIR__."/../.env"))
 // Generate the REST API URL from either an ENV variable (including from .env file),  or fallback to localhost.
 $restUrl = rtrim(getenv("REST_URL") ?: Settings::UCRM_LOCAL_URL ?: "https://localhost/", "/")."/api/v1.0";
 
+//$restUrl = "http://localhost/api/v1.0";
+
+//var_dump($restUrl);
+
 // Configure the REST Client...
+//RestClient::setHandler(new \GuzzleHttp\Handler\StreamHandler());
 RestClient::setBaseUrl($restUrl);
 RestClient::setHeaders([
     "Content-Type: application/json",
     "X-Auth-App-Key: " . Settings::PLUGIN_APP_KEY
 ]);
+
+//echo \UCRM\REST\Endpoints\Country::get();
+
+
 
 // =====================================================================================================================
 // LOCALIZATION

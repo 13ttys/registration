@@ -130,6 +130,8 @@ function geocodeAddress(button) {
         // Hide the button spinner icon and restore it's previous content.
         $button.html(idleText);
 
+        $button.css("width", "100%");
+
         $geocodePage = $("#geocodePage");
 
         if($geocodePage) {
